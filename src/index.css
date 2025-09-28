@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+@layer components {
+  .form-input {
+    @apply border border-gray-300 rounded p-2 m-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+  
+  .form-label {
+    @apply text-base font-medium  m-2
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300 active:bg-gray-400 disabled:opacity-50;
+  }
+
+  .btn-outline {
+    @apply border border-gray-400 text-gray-800 hover:bg-gray-100 active:bg-gray-200;
+  }
+
+  .note {
+    @apply relative p-4 m-3 w-80 h-80 
+           bg-yellow-200 border border-yellow-400 
+           shadow-lg rounded-sm 
+           cursor-pointer break-words overflow-hidden;
+
+    /* sticky note effect */
+    transform: rotate(-1deg);
+  }
+
+  .note:nth-child(2n) {
+    transform: rotate(2deg);
+  }
+
+  .note:nth-child(3n) {
+    transform: rotate(-2deg);
+  }
+
+  .notes-container {
+    @apply flex flex-wrap justify-start items-start gap-4;
+  }
+}
