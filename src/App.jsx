@@ -5,6 +5,7 @@ import NoteForm from './components/NoteForm'
 
 function App() {
 const [notes, setNotes] = useState([])
+const [editingNote, setEditingNote] = useState(null)
 
  function addNote(note){
  const newNote = {...note, id: Date.now()};
@@ -14,10 +15,19 @@ const [notes, setNotes] = useState([])
  function deleteNote(id){
   setNotes(prev => prev.filter(note => note.id !== id)) 
  }
+
+ function updateNote(id, updatedData){
+  setNotes(prevNotes => prevNotes.map(note => note.id === id ? {...note, ...updatedData} : note))
+  setEditingNote(null)
+}
+
+function startEdit(note){
+  setEditingNote(note)
+}
   return (
     <>
-      <NoteForm addNote={addNote}/>
-      <ListNotes notes={notes} deleteNote={deleteNote}/>
+      <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote}/>
+      <ListNotes notes={notes} deleteNote={deleteNote} startEdit={startEdit}/>
     </>
   )
 }

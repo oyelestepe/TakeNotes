@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-function NoteForm({addNote}) {
+function NoteForm({addNote, updateNote, editingNote}) {
 const [formData, setFormData] = useState({title:"", content:"",category:""})
   
 function handleTakeNote(e){
@@ -10,9 +10,25 @@ function handleTakeNote(e){
 
   function handleSubmit(e){
     e.preventDefault()
+    if(editingNote) {
+      updateNote(editingNote.id, formData)
+    } else {
     addNote(formData)
+    }
     setFormData({title:"", content:"", category:"Personal"})
   }
+
+  useEffect(() => {
+    if(editingNote){
+      setFormData({
+        title: editingNote.title,
+        content: editingNote.content,
+        category: editingNote.category
+      })
+    }else {
+      setFormData({title: "", content: "", category: "Personal"})
+    }
+  },[editingNote])
 
   return (
     <form className='flex flex-col w-lg border border-gray-300 border-solid p-3 m-2 rounded-xl '
@@ -30,7 +46,7 @@ function handleTakeNote(e){
             <option value="Work">Work</option>
             <option value="Study">Study</option>
         </select>
-        <button className='btn btn-primary' type='submit'>Take Note</button>
+        <button className='btn btn-primary' type='submit'>{editingNote ? "Save Changes" : "Take Note"}</button>
     </form>
   )
 }
