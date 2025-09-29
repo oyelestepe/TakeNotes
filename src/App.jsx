@@ -26,7 +26,7 @@ function startEdit(note){
 }
   return (
     <>
-      <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote}/>
+      <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote} setEditingNote={setEditingNote}/>
       <ListNotes notes={notes} deleteNote={deleteNote} startEdit={startEdit}/>
     </>
   )

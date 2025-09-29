@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-function NoteForm({addNote, updateNote, editingNote}) {
+function NoteForm({addNote, updateNote, editingNote, setEditingNote}) {
+
 const [formData, setFormData] = useState({title:"", content:"",category:""})
   
 function handleTakeNote(e){
@@ -18,6 +19,10 @@ function handleTakeNote(e){
     setFormData({title:"", content:"", category:"Personal"})
   }
 
+  function handleCancel(){
+    setEditingNote(null)
+    setFormData({title: "", content: "", category: "Personal"})
+  }
   useEffect(() => {
     if(editingNote){
       setFormData({
@@ -46,7 +51,16 @@ function handleTakeNote(e){
             <option value="Work">Work</option>
             <option value="Study">Study</option>
         </select>
-        <button className='btn btn-primary' type='submit'>{editingNote ? "Save Changes" : "Take Note"}</button>
+        <div className='flex gap-2 mt-2'>
+          <button className='btn btn-primary' type='submit'>
+            {editingNote ? "Save Changes" : "Take Note"}
+          </button>
+          {editingNote && (
+            <button onClick={handleCancel} type='button' className='btn btn-secondary bg-gray-400'>
+              Cancel
+            </button>
+          )}
+        </div>
     </form>
   )
 }
