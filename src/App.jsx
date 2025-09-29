@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Navbar from './components/Navbar'
 import ListNotes from './components/ListNotes'
 import NoteForm from './components/NoteForm'
 
@@ -26,6 +27,7 @@ function startEdit(note){
 }
   return (
     <>
+      <Navbar />
       <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote} setEditingNote={setEditingNote}/>
       <ListNotes notes={notes} deleteNote={deleteNote} startEdit={startEdit}/>
     </>
