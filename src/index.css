@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@theme {
+  --font-indie: "Indie Flower", cursive;;
+  --font-shadows: "Shadows Into Light", cursive
+}
 
 @layer components {
   .form-input {
@@ -29,7 +33,7 @@
     @apply relative p-4 m-3 w-80 h-80 
            bg-yellow-200 border border-yellow-400 
            shadow-lg rounded-sm 
-           cursor-pointer break-words overflow-hidden;
+           break-words overflow-hidden;
 
     /* sticky note effect */
     transform: rotate(-1deg);
