@@ -9,7 +9,7 @@ const [notes, setNotes] = useState([])
 const [editingNote, setEditingNote] = useState(null)
 
  function addNote(note){
- const newNote = {...note, id: Date.now()};
+ const newNote = {...note, id: crypto.randomUUID()};
  setNotes(prev => [...prev, newNote])
  }
 
