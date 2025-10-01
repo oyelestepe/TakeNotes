@@ -9,8 +9,12 @@ const [notes, setNotes] = useState([])
 const [editingNote, setEditingNote] = useState(null)
 
  function addNote(note){
+  if (note.title.trim() == "" || note.content.trim() ==""){
+    alert("type a note")
+  } else {
  const newNote = {...note, id: crypto.randomUUID()};
- setNotes(prev => [...prev, newNote])
+ setNotes(prev => [...prev, newNote]) 
+}
  }
 
  function deleteNote(id){
