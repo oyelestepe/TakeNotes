@@ -1,12 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import ListNotes from './components/ListNotes'
 import NoteForm from './components/NoteForm'
 
 function App() {
-const [notes, setNotes] = useState([])
+const [notes, setNotes] = useState(() => {
+  const storedNotes = localStorage.getItem("notes");
+  return storedNotes ? JSON.parse(storedNotes) : [];
+})
 const [editingNote, setEditingNote] = useState(null)
+
+// local storage 
+useEffect(() => {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}, [notes])
 
  function addNote(note){
   if (note.title.trim() == "" || note.content.trim() ==""){
@@ -29,6 +37,8 @@ const [editingNote, setEditingNote] = useState(null)
 function startEdit(note){
   setEditingNote(note)
 }
+
+
   return (
     <>
       <Navbar />
