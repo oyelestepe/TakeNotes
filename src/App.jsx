@@ -42,6 +42,14 @@ function startEdit(note){
   setEditingNote(note)
 }
 
+function deleteAllNotes(){
+  if(notes.length > 0 ){
+    setNotes([])
+  } else {
+    alert("There is no note to delete")
+  }
+  
+}
   return (
     <>
       <Navbar />
@@ -57,6 +65,9 @@ function startEdit(note){
         </select>
       </div>
       <ListNotes notes={filteredNotes} deleteNote={deleteNote} startEdit={startEdit}/>
+      <div>
+        <button onClick={deleteAllNotes}>Delete All Notes</button>
+      </div>
     </>
   )
 }
