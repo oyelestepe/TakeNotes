@@ -10,6 +10,10 @@ const [notes, setNotes] = useState(() => {
   return storedNotes ? JSON.parse(storedNotes) : [];
 })
 const [editingNote, setEditingNote] = useState(null)
+const [selectedCategory, setSelectedCategory] = useState("All")
+
+const categories = ["All", ...new Set(notes.map((note) => note.category))]
+const filteredNotes = selectedCategory === "All" ? notes : notes.filter((note) => note.category === selectedCategory);
 
 // local storage 
 useEffect(() => {
@@ -38,12 +42,21 @@ function startEdit(note){
   setEditingNote(note)
 }
 
-
   return (
     <>
       <Navbar />
       <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote} setEditingNote={setEditingNote}/>
-      <ListNotes notes={notes} deleteNote={deleteNote} startEdit={startEdit}/>
+      <div>
+        <label>Filter by Category:</label>
+        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            {categories.map((cat, i) => (
+      <option key={i} value={cat}>
+        {cat}
+      </option>
+    ))}
+        </select>
+      </div>
+      <ListNotes notes={filteredNotes} deleteNote={deleteNote} startEdit={startEdit}/>
     </>
   )
 }
