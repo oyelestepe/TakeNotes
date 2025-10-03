@@ -54,20 +54,25 @@ function deleteAllNotes(){
     <>
       <Navbar />
       <NoteForm addNote={addNote} updateNote={updateNote} editingNote={editingNote} setEditingNote={setEditingNote}/>
-      <div>
-        <label>Filter by Category:</label>
-        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            {categories.map((cat, i) => (
-      <option key={i} value={cat}>
-        {cat}
-      </option>
-    ))}
+      <div className='flex justify-between items-center p-2'>
+        <div>
+          <label>Filter by Category :</label>
+          <select className='border rounded-sm ' value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              {categories.map((cat, i) => (
+            <option key={i} value={cat}>
+            {cat}
+            </option>
+          ))}
         </select>
+        </div>
+        
+        <div className='flex items-center p-2'>
+        {notes.length > 0 ? <p>You have <span className='font-semibold'>{notes.length}</span> notes</p> : <p>You dont have note yet</p>}
+        <button className='btn btn-primary ml-2 ' onClick={deleteAllNotes}>Delete All Notes</button>
+      </div>
       </div>
       <ListNotes notes={filteredNotes} deleteNote={deleteNote} startEdit={startEdit}/>
-      <div>
-        <button onClick={deleteAllNotes}>Delete All Notes</button>
-      </div>
+      
     </>
   )
 }
