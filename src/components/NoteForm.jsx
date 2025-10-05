@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-function NoteForm({addNote, updateNote, editingNote, setEditingNote}) {
+function NoteForm({addNote, updateNote, editingNote, setEditingNote, setShowModal}) {
 
 const [formData, setFormData] = useState({title:"", content:"",category:""})
   
@@ -56,7 +56,7 @@ function handleTakeNote(e){
             {editingNote ? "Save Changes" : "Take Note"}
           </button>
           {editingNote && (
-            <button onClick={handleCancel} type='button' className='btn btn-secondary bg-gray-400'>
+            <button onClick={() => {handleCancel(); setShowModal(false)}} type='button' className='btn btn-secondary bg-gray-400'>
               Cancel
             </button>
           )}
