@@ -11,10 +11,14 @@ const [notes, setNotes] = useState(() => {
 })
 const [editingNote, setEditingNote] = useState(null)
 const [selectedCategory, setSelectedCategory] = useState("All")
-
+const [currentPage, setCurrentPage] = useState(1)
 const categories = ["All", ...new Set(notes.map((note) => note.category))]
 const filteredNotes = selectedCategory === "All" ? notes : notes.filter((note) => note.category === selectedCategory);
-
+const notesPerPage = 10;
+const indexOffLastNote = currentPage * notesPerPage;
+const indexOffFirstNote = indexOffLastNote - notesPerPage;
+const currentNotes = filteredNotes.slice(indexOffFirstNote, indexOffLastNote)
+const totalPages = Math.ceil(filteredNotes.length / notesPerPage);
 // local storage 
 useEffect(() => {
   localStorage.setItem("notes", JSON.stringify(notes));
@@ -71,8 +75,18 @@ function deleteAllNotes(){
         <button className='btn btn-primary ml-2 ' onClick={deleteAllNotes}>Delete All Notes</button>
       </div>
       </div>
-      <ListNotes notes={filteredNotes} deleteNote={deleteNote} startEdit={startEdit}/>
-      
+      <ListNotes notes={currentNotes} deleteNote={deleteNote} startEdit={startEdit}/>
+      <div className=''>
+          <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>Prev</button>
+
+          {Array.from({ length: totalPages}, (_,i) => (
+            <button 
+              key={i} onClick={() => setCurrentPage(i + 1)}>
+                {i +1}
+            </button>
+          ))}
+          <button onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}>Next</button>
+      </div>
     </>
   )
 }
