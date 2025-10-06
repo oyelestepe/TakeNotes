@@ -15,6 +15,9 @@ const [editingNote, setEditingNote] = useState(null)
 const [selectedCategory, setSelectedCategory] = useState("All")
 const [currentPage, setCurrentPage] = useState(1)
 const [showModal, setShowModal] = useState(false)
+const [showDeleteModal, setShowDeleteModal] = useState(false)
+const [noteToDelete, setNoteToDelete] = useState(null)
+const [showDeleteAllModal, setShowDeleteAllModal] = useState(false)
 const categories = ["All", ...new Set(notes.map((note) => note.category))]
 const filteredNotes = selectedCategory === "All" ? notes : notes.filter((note) => note.category === selectedCategory);
 const notesPerPage = 10;
@@ -41,6 +44,10 @@ useEffect(() => {
   setNotes(prev => prev.filter(note => note.id !== id)) 
  }
 
+ function handleDeleteClick(id){
+  setNoteToDelete(id);
+  setShowDeleteModal(true)
+ }
  function updateNote(id, updatedData){
   setNotes(prevNotes => prevNotes.map(note => note.id === id ? {...note, ...updatedData} : note))
   setEditingNote(null)
@@ -78,10 +85,26 @@ function deleteAllNotes(){
         
         <div className='flex items-center p-2'>
         {notes.length > 0 ? <p>You have <span className='font-semibold'>{notes.length}</span> notes</p> : <p>You dont have note yet</p>}
-        <button className='btn btn-primary ml-2 ' onClick={deleteAllNotes}>Delete All Notes</button>
+        <button className='btn btn-primary ml-2 ' onClick={() => setShowDeleteAllModal(true)}>Delete All Notes</button>
+        
       </div>
+      
       </div>
-      <ListNotes notes={currentNotes} deleteNote={deleteNote} startEdit={startEdit}/>
+      {
+        showDeleteAllModal && (
+          <div onClick={() => setShowDeleteAllModal(false)} className='fixed inset-0 bg-black/75 flex justify-center items-center z-50'>
+            <div onClick={(e) => e.stopPropagation()} className='relative bg-white p-6 rounded-lg w-[90%] max-w-xl shadow-lg'>
+              <h2 className='text-xl font-semibold mb-4 '>Delete All?</h2>
+              <p className='text-lg mb-4'>Are you sure you want to delete all notes? This action cannot be undone.</p>
+              <div className='flex justify-center gap-4'>
+                <button onClick={() => setShowDeleteAllModal(false)} className='bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md cursor-pointer'>Cancel</button>
+                <button onClick={() => {deleteAllNotes(); setShowDeleteAllModal(false)}} className='bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md cursor-pointer'>Delete</button>
+              </div>
+            </div>
+          </div>
+        )
+      }
+      <ListNotes notes={currentNotes} deleteNote={deleteNote} startEdit={startEdit} handleDeleteClick={handleDeleteClick}/>
       {
         showModal && (
           <div className='fixed inset-0 bg-black/75 flex justify-center items-center z-50' onClick={() => setShowModal(false)}>
@@ -93,16 +116,31 @@ function deleteAllNotes(){
           </div>
         )
       }
-      <div className=''>
-          <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>Prev</button>
+      {
+        showDeleteModal && (
+          <div onClick={() => setShowDeleteModal(false)} className='fixed inset-0 bg-black/60 flex justify-center items-center z-50'>
+            <div onClick={(e) => e.stopPropagation()} className='bg-white rounded-lg p-6 shadow-md w-[90%] max-w-sm text-center'>
+              <h2 className='text-xl font-semibold mb-4'>Delete note?</h2>
+              <p className='text-gray-600 mb-6'>Are you sure you want to delete this note? This action cannot be undone.</p>
+              <div className='flex justify-center gap-4'>
+                <button onClick={() => setShowDeleteModal(false)} className='bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-md cursor-pointer'>Cancel</button>
+                <button className='bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md cursor-pointer'
+                  onClick={() => {deleteNote(noteToDelete); setShowDeleteModal(false); setNoteToDelete(null)}}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )
+      }
+      <div className='bg-yellow-200 flex justify-center mt-3'>
+          <button className='btn bg-amber-500 rounded-2xl text-white ' onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>Prev</button>
 
           {Array.from({ length: totalPages}, (_,i) => (
-            <button 
+            <button className='text-white font-bold text-xl p-1.5 m-1 bg-amber-400 rounded-xl cursor-pointer'
               key={i} onClick={() => setCurrentPage(i + 1)}>
                 {i +1}
             </button>
           ))}
-          <button onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}>Next</button>
+          <button className='btn bg-amber-500 rounded-2xl text-white ' onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}>Next</button>
       </div>
     </>
   )
