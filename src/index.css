@@ -30,9 +30,8 @@
   }
 
   .note {
-    @apply relative p-4 m-3 w-80 h-80 
-           bg-yellow-200 border border-yellow-400 
-           shadow-lg rounded-sm 
+    @apply relative p-4 m-3 w-80 h-80  
+           shadow-sm rounded-sm 
            break-words overflow-hidden;
 
     /* sticky note effect */
