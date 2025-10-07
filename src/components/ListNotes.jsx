@@ -25,6 +25,7 @@ function ListNotes({notes, deleteNote, startEdit, handleDeleteClick}) {
             const tagClass = labelStyles[key] || "bg-gray-400";
             return(
                 <div  key={note.id} className={`note border ${cardClass}`}>
+                <p className='text-xs flex justify-end'>{note.date}</p>
                 <div className='flex justify-between'>
                   <h2 className='font-bold font-indie text-lg mb-2'>{note.title}</h2>
                   <div className='flex mt-0 p-0'>
