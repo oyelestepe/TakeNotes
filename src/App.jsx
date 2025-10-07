@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import ListNotes from './components/ListNotes'
@@ -13,17 +13,23 @@ const [notes, setNotes] = useState(() => {
 })
 const [editingNote, setEditingNote] = useState(null)
 const [selectedCategory, setSelectedCategory] = useState("All")
+const [sortOrder, setSortOrder] = useState("newest");
 const [currentPage, setCurrentPage] = useState(1)
 const [showModal, setShowModal] = useState(false)
 const [showDeleteModal, setShowDeleteModal] = useState(false)
 const [noteToDelete, setNoteToDelete] = useState(null)
 const [showDeleteAllModal, setShowDeleteAllModal] = useState(false)
+
+
 const categories = ["All", ...new Set(notes.map((note) => note.category))]
 const filteredNotes = selectedCategory === "All" ? notes : notes.filter((note) => note.category === selectedCategory);
+const sortedNotes = [...filteredNotes].sort((a,b) => 
+  sortOrder === "newest" ? new Date(b.date) - new Date(a.date) :new Date(a.date) - new Date(b.date)
+)
 const notesPerPage = 10;
 const indexOffLastNote = currentPage * notesPerPage;
 const indexOffFirstNote = indexOffLastNote - notesPerPage;
-const currentNotes = filteredNotes.slice(indexOffFirstNote, indexOffLastNote)
+const currentNotes = sortedNotes.slice(indexOffFirstNote, indexOffLastNote)
 const totalPages = Math.ceil(filteredNotes.length / notesPerPage);
 // local storage 
 useEffect(() => {
@@ -70,6 +76,9 @@ function deleteAllNotes(){
   }
   
 }
+
+
+
   return (
     <>
       <Navbar />
@@ -84,8 +93,13 @@ function deleteAllNotes(){
             </option>
           ))}
         </select>
+        <button onClick={() =>setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"))}
+                className="bg-gray-200 hover:bg-gray-300 px-3 mx-2 py-1 rounded-md text-sm">
+          Sort by: {sortOrder === "newest" ? "Newest First ↑" : "Oldest First ↓"}
+        </button>
         </div>
         
+
         <div className='flex items-center p-2'>
         {notes.length > 0 ? <p>You have <span className='font-semibold'>{notes.length}</span> notes</p> : <p>You dont have note yet</p>}
         <button className='btn btn-primary ml-2 ' onClick={() => setShowDeleteAllModal(true)}>Delete All Notes</button>
