@@ -5,6 +5,10 @@ import ListNotes from './components/ListNotes'
 import NoteForm from './components/NoteForm'
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
+import { GrFormNext } from "react-icons/gr";
+import { MdNavigateNext } from "react-icons/md";
+import { GrFormPrevious } from "react-icons/gr";
+
 
 function App() {
 const [notes, setNotes] = useState(() => {
@@ -94,7 +98,7 @@ function deleteAllNotes(){
           ))}
         </select>
         <button onClick={() =>setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"))}
-                className="bg-gray-200 hover:bg-gray-300 px-3 mx-2 py-1 rounded-md text-sm">
+                className="bg-gray-200 hover:bg-gray-300 px-3 mx- py-1 rounded-md text-sm">
           Sort by: {sortOrder === "newest" ? "Newest First ↑" : "Oldest First ↓"}
         </button>
         </div>
@@ -149,15 +153,21 @@ function deleteAllNotes(){
         )
       }
       <div className='bg-yellow-200 flex justify-center mt-3'>
-          <button className='btn bg-amber-500 rounded-2xl text-white ' onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>Prev</button>
+          <button className='btn bg-slate-50 border-slate-200 border m-0.5 w-12 h-12 flex items-center justify-center rounded-full' onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
+            <GrFormPrevious color='gray' />
+          </button>
 
           {Array.from({ length: totalPages}, (_,i) => (
-            <button className='text-white font-bold text-xl p-1.5 m-1 bg-amber-400 rounded-xl cursor-pointer'
+            <button 
+            className='text-gray-400 bg-slate-50 border-slate-200 font-normal border text-lg p-2 m-0.5 w-12 h-12 flex items-center justify-center  rounded-full cursor-pointer'
               key={i} onClick={() => setCurrentPage(i + 1)}>
                 {i +1}
             </button>
           ))}
-          <button className='btn bg-amber-500 rounded-2xl text-white ' onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}>Next</button>
+          <button onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}
+            className='btn bg-slate-50 border-slate-200 border m-0.5 w-12 h-12 flex items-center justify-center rounded-full'>
+              <MdNavigateNext color='gray'/>
+          </button>
       </div>
     </>
   )
